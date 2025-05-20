@@ -1,0 +1,23 @@
+crear un apartado en admin para aceptar protectoras
+crear el sistema de tickets correctamente y replantearlo
+intentar lo de la geolocalización de forma gratuita
+investigar más sobre la api de intersection observer para la página principal
+hacer todas las páginas del admin 100% funcionales
+terminar las páginas faltantes
+hacer un modal para los comentarios y para el tickets
+botón de añadir a la lista, que si le das de nuevo, comprobar si está en la lista y decirle al usuario si lo quiere eliminar o algo de por el estilo
+carrousel, pensar buen funcionamiento js
+
+
+
+Entendido. Veo que prefieres implementar tú mismo las cookies de sesión.
+
+Te dejo un resumen de lo que necesitarías hacer para implementar las cookies de sesión correctamente:
+
+En el lado del cliente (JavaScript):
+Funciones para crear, leer y eliminar cookies
+Función para guardar información de sesión en cookies
+Función para verificar si existe una cookie de sesión
+En el lado del servidor (PHP):
+Modificar tus archivos de login (login.php y loginProtectora.php) para añadir una casilla "Recordarme"
+Cuando el usuario marca "Recordarme", crear una cookie con un token
