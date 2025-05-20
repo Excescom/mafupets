@@ -7,7 +7,7 @@ terminar las páginas faltantes
 hacer un modal para los comentarios y para el tickets
 botón de añadir a la lista, que si le das de nuevo, comprobar si está en la lista y decirle al usuario si lo quiere eliminar o algo de por el estilo
 carrousel, pensar buen funcionamiento js
-
+botón para mostrar o no la información del animal con algún signo
 
 
 Entendido. Veo que prefieres implementar tú mismo las cookies de sesión.

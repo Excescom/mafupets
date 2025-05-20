@@ -43,7 +43,7 @@
       <input type="password" id="password" name="password" required class="w-full p-2 mb-4 border border-gray-600 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
 
       <label class="block text-gray-300 text-sm font-semibold mb-2" for="Telefono">nº teléfono</label>
-      <input type="number" id="Telefono" name="Telefono" min="9" max="9" required class="w-full p-2 mb-4 border border-gray-600 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <input type="number" id="Telefono" name="Telefono" min="100000000" max="999999999" required class="w-full p-2 mb-4 border border-gray-600 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
 
 
     <button type="submit" class="w-full bg-[#EDB439] hover:bg-[#EDB439]/80 text-white font-bold p-2 px-4 rounded">Registrarse</button>

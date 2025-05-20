@@ -1,5 +1,5 @@
 
-CREATE DATABASE IF NOT EXISTS mafupets 
+CREATE DATABASE IF NOT EXISTS mafupets;
 USE mafupets;
 
 -- Tabla: Usuarios
@@ -11,7 +11,7 @@ CREATE TABLE Usuarios (
     Correo VARCHAR(255) UNIQUE,
     Contrasena VARCHAR(255),
     Admin BOOLEAN
-)
+);
 
 -- Tabla: Protectoras
 CREATE TABLE Protectoras (
@@ -22,7 +22,7 @@ CREATE TABLE Protectoras (
     Ubicacion VARCHAR(255),
     activa BOOLEAN,
     Informacion VARCHAR(255)
-)
+);
 
 -- Tabla: TelefonosProtectoras
 CREATE TABLE TelefonosProtectoras (
@@ -30,7 +30,7 @@ CREATE TABLE TelefonosProtectoras (
     IDProtectora INT,
     Numero VARCHAR(20),
     FOREIGN KEY (IDProtectora) REFERENCES Protectoras(UniqueID) ON DELETE CASCADE
-)
+);
 
 -- Tabla: Animales
 CREATE TABLE Animales (
@@ -42,7 +42,7 @@ CREATE TABLE Animales (
     Discapacidad BOOLEAN,
     Descripcion VARCHAR(255),
     FOREIGN KEY (IDProtectora) REFERENCES Protectoras(UniqueID) ON DELETE CASCADE
-)
+);
 
 -- Tabla: Multimedias
 CREATE TABLE Multimedias (
@@ -50,13 +50,13 @@ CREATE TABLE Multimedias (
     IDAnimal INT,
     Enlace VARCHAR(255),
     FOREIGN KEY (IDAnimal) REFERENCES Animales(UniqueID) ON DELETE CASCADE
-)
+);
 
 -- Tabla: Publicidades
 CREATE TABLE Publicidades (
     UniqueID INT AUTO_INCREMENT PRIMARY KEY,
     Enlace VARCHAR(255)
-)
+);
 
 -- Tabla: MultimediasPublicidades
 CREATE TABLE MultimediasPublicidades (
@@ -64,7 +64,7 @@ CREATE TABLE MultimediasPublicidades (
     IDPublicidad INT,
     Enlace VARCHAR(255),
     FOREIGN KEY (IDPublicidad) REFERENCES Publicidades(UniqueID)
-)
+);
 
 -- Tabla: Reservas
 CREATE TABLE Reservas (
@@ -73,7 +73,7 @@ CREATE TABLE Reservas (
     FechaHora DATETIME,
     Tipo ENUM('visita', 'puertas abiertas', 'voluntariado'),
     FOREIGN KEY (IDProtectora) REFERENCES Protectoras(UniqueID)
-)
+);
 
 -- Tabla: UsuariosReservas (relación N:M)
 CREATE TABLE UsuariosReservas (
@@ -83,7 +83,7 @@ CREATE TABLE UsuariosReservas (
     PRIMARY KEY (IDUsuario, IDReserva),
     FOREIGN KEY (IDUsuario) REFERENCES Usuarios(UniqueID) ON DELETE CASCADE,
     FOREIGN KEY (IDReserva) REFERENCES Reservas(UniqueID) ON DELETE CASCADE
-)
+);
 
 
 
@@ -94,7 +94,7 @@ CREATE TABLE Favoritos (
     PRIMARY KEY (IDAnimal, IDUsuario),
     FOREIGN KEY (IDAnimal) REFERENCES Animales(UniqueID) ON DELETE CASCADE,
     FOREIGN KEY (IDUsuario) REFERENCES Usuarios(UniqueID) ON DELETE CASCADE
-)
+);
 
 
 -- Tabla: TiketsUsuarios
@@ -106,7 +106,7 @@ CREATE TABLE TiketsUsuarios (
     Estado BOOLEAN,
     Descripcion VARCHAR(255),
     FOREIGN KEY (IDUsuario) REFERENCES Usuarios(UniqueID) ON DELETE CASCADE
-)
+);
 
 -- Tabla: TiketsProtectoras
 CREATE TABLE TiketsProtectoras (
@@ -117,7 +117,8 @@ CREATE TABLE TiketsProtectoras (
     Estado BOOLEAN,
     Descripcion VARCHAR(255),
     FOREIGN KEY (IDProtectora) REFERENCES Protectoras(UniqueID) ON DELETE CASCADE
-)
+);
+
 -- Tabla: Comentarios (relación N:M)
 CREATE TABLE Comentarios (
     IDUsuario INT,
@@ -126,4 +127,4 @@ CREATE TABLE Comentarios (
     PRIMARY KEY (IDUsuario, IDAnimal),
     FOREIGN KEY (IDUsuario) REFERENCES Usuarios(UniqueID) ON DELETE CASCADE,
     FOREIGN KEY (IDAnimal) REFERENCES Animales(UniqueID) ON DELETE CASCADE
-)
+);

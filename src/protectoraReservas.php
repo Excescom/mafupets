@@ -69,8 +69,9 @@
           echo '<div class="flex justify-between mb-2">';
               echo '<span class="text-gray-300">fecha y hora: '.$reserva['FechaHora'].'</span>';
           echo '</div>';
-          echo '<form action="" method="POST">';
-          echo '<button class="w-full bg-[#DB3066] hover:bg-[#DB3066]/80 text-white font-bold py-2 px-4 rounded">';
+          echo '<form action="" method="POST" class="flex flex-col text-center gap-3">';
+          echo '<a class="w-full bg-[#54B5BE] hover:bg-[#54B5BE]/80 text-white font-bold py-2 px-4 rounded" href="protectoraGestionarReservas.php?id='.$reserva['UniqueID'].'">Gestionar reserva</a>';
+          echo '<button class="w-full bg-[#DB3066] hover:bg-[#DB3066]/80 text-white font-bold py-2 px-4 rounded" type="submit">';
               echo 'Eliminar';
               echo '<input type="hidden" name="id" value="'.$reserva['UniqueID'].'">';
           echo '</button>';

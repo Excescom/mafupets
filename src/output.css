@@ -7,7 +7,6 @@
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
-    --color-red-50: oklch(97.1% 0.013 17.38);
     --color-red-500: oklch(63.7% 0.237 25.331);
     --color-red-600: oklch(57.7% 0.245 27.325);
     --color-orange-200: oklch(90.1% 0.076 70.697);
@@ -15,10 +14,7 @@
     --color-amber-400: oklch(82.8% 0.189 84.429);
     --color-amber-500: oklch(76.9% 0.188 70.08);
     --color-amber-600: oklch(66.6% 0.179 58.318);
-    --color-yellow-500: oklch(79.5% 0.184 86.047);
     --color-green-500: oklch(72.3% 0.219 149.579);
-    --color-teal-500: oklch(70.4% 0.14 182.503);
-    --color-teal-600: oklch(60% 0.118 184.704);
     --color-blue-500: oklch(62.3% 0.214 259.815);
     --color-blue-600: oklch(54.6% 0.245 262.881);
     --color-blue-800: oklch(42.4% 0.199 265.638);
@@ -33,7 +29,6 @@
     --color-white: #fff;
     --spacing: 0.25rem;
     --container-sm: 24rem;
-    --container-lg: 32rem;
     --container-2xl: 42rem;
     --container-5xl: 64rem;
     --text-xs: 0.75rem;
@@ -48,12 +43,13 @@
     --text-2xl--line-height: calc(2 / 1.5);
     --text-4xl: 2.25rem;
     --text-4xl--line-height: calc(2.5 / 2.25);
+    --text-5xl: 3rem;
+    --text-5xl--line-height: 1;
     --text-7xl: 4.5rem;
     --text-7xl--line-height: 1;
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
-    --leading-tight: 1.25;
     --radius-md: 0.375rem;
     --radius-lg: 0.5rem;
     --radius-xl: 0.75rem;
@@ -350,9 +346,6 @@
   .w-\[100\%\] {
     width: 100%;
   }
-  .w-\[100px\] {
-    width: 100px;
-  }
   .w-\[200px\] {
     width: 200px;
   }
@@ -520,10 +513,6 @@
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 1px;
   }
-  .border-b-2 {
-    border-bottom-style: var(--tw-border-style);
-    border-bottom-width: 2px;
-  }
   .border-gray-300 {
     border-color: var(--color-gray-300);
   }
@@ -533,15 +522,6 @@
   .border-gray-700 {
     border-color: var(--color-gray-700);
   }
-  .border-transparent {
-    border-color: transparent;
-  }
-  .bg-\[\#\#54B5BE\] {
-    background-color: ##54B5BE;
-  }
-  .bg-\[\#\#EDB439\] {
-    background-color: ##EDB439;
-  }
   .bg-\[\#54B5BE\] {
     background-color: #54B5BE;
   }
@@ -550,9 +530,6 @@
   }
   .bg-\[\#EDB439\] {
     background-color: #EDB439;
-  }
-  .bg-\[\#FF0000\] {
-    background-color: #FF0000;
   }
   .bg-amber-400 {
     background-color: var(--color-amber-400);
@@ -580,9 +557,6 @@
   }
   .bg-gray-800 {
     background-color: var(--color-gray-800);
-  }
-  .bg-orange-200 {
-    background-color: var(--color-orange-200);
   }
   .bg-red-500 {
     background-color: var(--color-red-500);
@@ -669,6 +643,10 @@
   .text-4xl {
     font-size: var(--text-4xl);
     line-height: var(--tw-leading, var(--text-4xl--line-height));
+  }
+  .text-5xl {
+    font-size: var(--text-5xl);
+    line-height: var(--tw-leading, var(--text-5xl--line-height));
   }
   .text-7xl {
     font-size: var(--text-7xl);
@@ -786,10 +764,10 @@
       }
     }
   }
-  .hover\:bg-\[\#\#EDB439\]\/80 {
+  .hover\:bg-\[\#\#54B5BE\]\/80 {
     &:hover {
       @media (hover: hover) {
-        background-color: color-mix(in oklab, ##EDB439 80%, transparent);
+        background-color: color-mix(in oklab, ##54B5BE 80%, transparent);
       }
     }
   }
@@ -807,31 +785,17 @@
       }
     }
   }
+  .hover\:bg-\[\#EDB439\] {
+    &:hover {
+      @media (hover: hover) {
+        background-color: #EDB439;
+      }
+    }
+  }
   .hover\:bg-\[\#EDB439\]\/80 {
     &:hover {
       @media (hover: hover) {
         background-color: color-mix(in oklab, #EDB439 80%, transparent);
-      }
-    }
-  }
-  .hover\:bg-\[\#FF0000\]\/80 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: color-mix(in oklab, #FF0000 80%, transparent);
-      }
-    }
-  }
-  .hover\:bg-\[\#roho\]\/80 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: color-mix(in oklab, #roho 80%, transparent);
-      }
-    }
-  }
-  .hover\:bg-\[\#rojo\]\/80 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: color-mix(in oklab, #rojo 80%, transparent);
       }
     }
   }
@@ -853,13 +817,6 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-gray-50);
-      }
-    }
-  }
-  .hover\:bg-orange-300 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-orange-300);
       }
     }
   }

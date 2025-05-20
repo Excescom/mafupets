@@ -18,7 +18,7 @@
 ?>
   <main class="flex flex-col items-center w-full gap-4 relative pt-[30px] ">
     <div class="flex flex-col items-center content-center w-full gap-5 p-4">
-        <h1 class="text-7xl">Confirmación de cierre de sesión</h1>
+        <h1 class="lg:text-7xl text-4xl text-center">Confirmación de cierre de sesión</h1>
     </div>
     <p>¿Está seguro de que desea cerrar sesión?</p>
     <div class="flex justify-center items-center content-center w-full gap-5 p-4 text-center"> 

@@ -92,6 +92,25 @@ function obtenerReservasProtectora($ID)
     }
 }
 
+function obtenerReserva($ID)
+{
+    $conexion = conection();
+
+    if ($conexion === null) {
+        return "error";
+    }
+
+    try {
+        $stmt = $conexion->prepare("SELECT * FROM reservas WHERE UniqueID = :id");
+        $stmt->bindParam(':id', $ID, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        echo "Error al obtener reserva: " . $e->getMessage();
+        return [];
+    }
+}
+
 function eliminarReserva($ID)
 {
     $conexion = conection();

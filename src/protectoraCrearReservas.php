@@ -24,7 +24,7 @@
 
   ?>
 
-  <main class="items-center w-[90%] gap-7 relative pl-6 left-[80px] flex flex-col justify-center">
+  <main class="items-center w-[90%] gap-7 relative pl-6  flex flex-col justify-center">
     <!-- Cabecera de la protectora -->
     <div class="flex flex-col items-center content-center w-full gap-5 p-4">
         <div class="rounded-full bg-amber-400 w-[200px] h-[200px] min-w-[200px] min-h-[200px] flex-shrink-0 overflow-hidden flex items-center justify-center">

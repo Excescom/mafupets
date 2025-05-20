@@ -33,7 +33,9 @@
         $stmt->execute([$Correo, $Telefono, $Nombre, $Apellidos, $ContrasenaHash, $Admin, $usuario['UniqueID']]);
         $_SESSION['Usuario']['Nombre'] = $Nombre;
         $_SESSION['Usuario']['Correo'] = $Correo;
-        header("Location: config.php");
+        echo "<div class='text-center text-green-500'>Usuario actualizado correctamente</div>";
+        //tiempo de espera para recargar la página después de decir que se ha actualizado correctamente
+        echo "<meta http-equiv='refresh' content='2;url=config.php'>";
         exit;
       }
       catch(PDOException $e){
@@ -90,7 +92,7 @@
         class="w-full p-2 mb-4 border border-gray-600 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
   
   
-      <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold p-2 px-4 rounded">
+      <button type="submit" class="w-full bg-[#EDB439] hover:bg-[#EDB439]/80 text-white font-bold p-2 px-4 rounded">
               Actualizar
         </button>
       </form>
@@ -109,7 +111,7 @@
     class="w-full p-2 mb-4 border border-gray-600 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
 
     <label class="block text-gray-300 text-sm font-semibold mb-2" for="Contrasena">Contraseña</label>
-    <input type="password" id="Contrasena" name="Contrasena" value="<?php echo $protectora['Contrasena']; ?>" required
+    <input type="password" id="Contrasena" name="Contrasena" required
     class="w-full p-2 mb-4 border border-gray-600 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
 
     <label class="block text-gray-300 text-sm font-semibold mb-2" for="Ubicacion">Ubicación (se mantendrá privada)</label>
@@ -120,20 +122,17 @@
         <input type="file" name="imagen" id="imagen" required
             class="w-full p-2 mb-4 border border-gray-600 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
     <button 
-    class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold p-2 px-4 rounded">
+    class="w-full bg-[#54B5BE] hover:bg-[#54B5BE]/80 text-white font-bold p-2 px-4 rounded">
     Actualizar Protectora
     </button>
+    <div class="w-full bg-[#54B5BE] hover:bg-[#54B5BE]/80 text-white font-bold p-2 px-4 rounded text-center">
+    <a href="configTelefono.php" >
+    modificar números de teléfono
+    </a>
+    </div>
     </form>
 
-    <form action="" method="POST" enctype="multipart/form-data" class="max-w-sm mx-auto bg-gray-800 p-6 rounded-lg shadow-md w-full gap-3 flex flex-col ">
-    <label class="block text-gray-300 text-sm font-semibold mb-2" for="Telefono">añadir nuevo número de teléfono</label>
-    <input type="number" id="Telefono" name="Telefono" required
-    class="w-full p-2 mb-4 border border-gray-600 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-    <button 
-    class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold p-2 px-4 rounded">
-    Añadir número de teléfono
-    </button>
-    </form>
+    
       <?php
       }
       

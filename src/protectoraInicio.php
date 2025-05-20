@@ -55,8 +55,8 @@
     $carpetaImagenAnimal = "multimedia/protectoras/".$protectora['UniqueID']."/".$animal['UniqueID']."/perfil/";
     $imagenanimal = glob($carpetaImagenAnimal."*");
     echo '<div class="text-center flex flex-col justify-center items-center">
-       <a class="rounded-lg object-cover w-[80%]" href="IndexAnimales.php?id='.$animal['UniqueID'].'"><img class="" src="'.$imagenanimal[0].'" alt="animal"></a>
-       <p class="mt-2 text-white">'.$animal['Nombre'].'</p>
+       <a class="rounded-lg object-cover text-black dark:text-white w-[80%]" href="IndexAnimales.php?id='.$animal['UniqueID'].'"><img class="" src="'.$imagenanimal[0].'" alt="animal"></a>
+       <p class="mt-2 text-black dark:text-white">'.$animal['Nombre'].'</p>
    </div>';
    }?>
 </div>
