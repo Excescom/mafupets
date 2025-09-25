@@ -14,8 +14,8 @@ function correoRegistro($destinatario)
     $mail->isSMTP();
     $mail->Host       = 'smtp.gmail.com'; // Servidor SMTP
     $mail->SMTPAuth   = true;
-    $mail->Username   = 'mafupets@gmail.com'; // Tu correo
-    $mail->Password   = 'asyh gqmm gnte rsxp'; // Contraseña o App Password
+    $mail->Username   = ''; // Tu correo
+    $mail->Password   = ''; // Contraseña o App Password
     $mail->SMTPSecure = 'tls';
     $mail->Port       = 587;
     
