@@ -1,0 +1,53 @@
+# Archivos de video
+*.mp4
+*.mov
+*.avi
+
+# Archivos de entorno
+.env
+.env.local
+.env.*.local
+
+# Dependencias
+/vendor/
+/node_modules/
+
+# Archivos de IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos de caché
+.cache/
+.angular/cache/
+
+# Archivos de compilación
+/dist/
+/build/
+
+# Archivos de entorno de desarrollo
+.env.development
+.env.test
+.env.production
+
+# Archivos de configuración local
+/config/local.php
+
+# Archivos de sesión
+/sessions/*
+!/sessions/.gitkeep
+
+# Archivos subidos por los usuarios
+/public/uploads/*
+!/public/uploads/.gitkeep
