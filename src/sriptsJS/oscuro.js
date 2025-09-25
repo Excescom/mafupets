@@ -9,5 +9,3 @@ document.documentElement.classList.toggle(
   localStorage.theme = "dark";
   
   localStorage.removeItem("theme");
-
-

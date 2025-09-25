@@ -1,10 +1,10 @@
-<nav class="flex items-center">
-    <ul class="flex gap-2">
-        <li><a href="adminAnimales.php">Animales</a></li>
-        <li><a href="adminUsuarios.php">Usuarios</a></li>
-        <li><a href="adminProtectora.php">Protectoras</a></li>
-        <li><a href="adminComentarios.php">Comentarios</a></li>
-        <li><a href="adminTikets.php">Tickets</a></li>
-        <li><a href="index.php">web</a></li>
-    </ul>
+<nav class="flex justify-center">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 p-2">
+        <a class="bg-[#EDB439] hover:bg-[#EDB439]/80 p-2 rounded text-center" href="adminAnimales.php">Animales</a>
+        <a class="bg-[#EDB439] hover:bg-[#EDB439]/80 p-2 rounded text-center" href="adminUsuarios.php">Usuarios</a>
+        <a class="bg-[#EDB439] hover:bg-[#EDB439]/80 p-2 rounded text-center" href="adminProtectora.php">Protectoras</a>
+        <a class="bg-[#EDB439] hover:bg-[#EDB439]/80 p-2 rounded text-center" href="adminComentarios.php">Comentarios</a>
+        <a class="bg-[#EDB439] hover:bg-[#EDB439]/80 p-2 rounded text-center" href="adminTikets.php">Tickets</a>
+        <a class="bg-[#EDB439] hover:bg-[#EDB439]/80 p-2 rounded text-center" href="index.php?contador=0">web</a>
+    </div>
 </nav>

@@ -51,6 +51,9 @@
           <li>
             <a href="protectoraPublicaciones.php" class="inline-block hover:text-gray-300 hover:border-gray-300 p-4 rounded-t-lg ">Crear animales</a>
           </li>
+          <li>
+            <a href="crearTicketProtectora.php" class="inline-block hover:text-gray-300 hover:border-gray-300 p-4 rounded-t-lg ">Crear tickets</a>
+          </li>
         </ul>
       </div>
 
@@ -69,13 +72,20 @@
           echo '<div class="flex justify-between mb-2">';
               echo '<span class="text-gray-300">fecha y hora: '.$reserva['FechaHora'].'</span>';
           echo '</div>';
-          echo '<form action="" method="POST" class="flex flex-col text-center gap-3">';
-          echo '<a class="w-full bg-[#54B5BE] hover:bg-[#54B5BE]/80 text-white font-bold py-2 px-4 rounded" href="protectoraGestionarReservas.php?id='.$reserva['UniqueID'].'">Gestionar reserva</a>';
+          echo '<form action="" method="POST" class="flex flex-col text-center gap-3 p-2">';
+          echo '<a class="w-full bg-[#54B5BE] hover:bg-[#54B5BE]/80 text-white font-bold py-2 px-4 rounded" href="protectoraModificarReservas.php?id='.$reserva['UniqueID'].'">Modificar reserva</a>';
+          echo '<a class="w-full bg-[#54B5BE] hover:bg-[#54B5BE]/80 text-white font-bold py-2 px-4 rounded" href="gestionarVisitas.php?id='.$reserva['UniqueID'].'">Gestionar reserva</a>';
           echo '<button class="w-full bg-[#DB3066] hover:bg-[#DB3066]/80 text-white font-bold py-2 px-4 rounded" type="submit">';
               echo 'Eliminar';
               echo '<input type="hidden" name="id" value="'.$reserva['UniqueID'].'">';
           echo '</button>';
           echo '</form>';
+          if($reserva['estado'] == 1){
+            echo '<p class="w-full bg-[#54B5BE] text-white font-bold p-2 px-4 rounded text-center">ABIERTA</p>';
+          }
+          else{
+            echo '<p class="w-full bg-[#DB3066] text-white font-bold p-2 px-4 rounded text-center">CERRADA</p>';
+          }
       echo '</div>';    
       echo '</div>';
     }

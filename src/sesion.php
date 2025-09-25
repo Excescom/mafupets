@@ -16,8 +16,8 @@ function comprobar_admin(){
 		session_start();
 	}
     if (!isset($_SESSION["Usuario"]['Admin']) ||$_SESSION["Usuario"]['Admin'] == 0) {    
-        header("Location: index.php?redirigido=true");
-        exit; // Añadir exit para detener la ejecución después de redireccionar
+        header("Location: index.php?contador=0");
+        exit; 
     }     
 }
 
@@ -26,7 +26,7 @@ function comprobar_sesion_protectora(){
 		session_start();
 	}
 	if (!isset($_SESSION["Protectora"])) {    
-		header("Location: index.php?redirigido=true");
-		exit; // Añadir exit para detener la ejecución después de redireccionar
+		header("Location: index.php?contador=0");
+		exit; 
 	}  
 }

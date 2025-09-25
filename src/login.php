@@ -35,7 +35,7 @@
             else 
             {
                 $_SESSION['Admin'] = 0;
-                header("Location: index.php");
+                header("Location: index.php?contador=0");
                 exit;
             }
             return;
@@ -43,7 +43,7 @@
     }
 ?>
 
-  <main class="flex flex-col justify-center items-center w-full gap-4 relative pt-[50px] p-2">
+  <main class="flex flex-col justify-center items-center w-full gap-4 relative pt-[50px] p-2 ">
     <form action="" class="max-w-sm mx-auto bg-gray-800 p-6 rounded-lg shadow-md w-full gap-3 flex flex-col" method="POST">
         <label class="block text-gray-300 text-sm font-semibold mb-2" for="email">Correo</label>
         <input type="email" id="email" name="email" required
@@ -53,7 +53,7 @@
         <input type="password" id="password" name="password" required
             class="w-full p-2 mb-4 border border-gray-600 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
     
-        <button type="submit" class="w-full bg-[#54B5BE] hover:bg-[#54B5BE]/80 text-white font-bold py-2 px-4 rounded">
+        <button type="submit"  class=" disabled:opacity-50 w-full bg-[#54B5BE] hover:bg-[#54B5BE]/80 text-white font-bold py-2 px-4 rounded">
             Inicar sesión
         </button>
         <a href="registroUsuarios.php" class="block w-full bg-[#54B5BE] hover:bg-[#54B5BE]/80 text-white font-bold p-2 px-4 rounded text-center">
@@ -64,8 +64,6 @@
         </a>
     </form>
   </main>
-
-
 
 </body>
 </html>

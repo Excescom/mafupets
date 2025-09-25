@@ -1,0 +1,42 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./public:/var/www/html/public
+    depends_on:
+      - db
+    links:
+      - "db:localhost"
+
+  db:
+    image: mysql:8.0
+    container_name: mafupets-mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: mafupets
+    volumes:
+      - db-data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: mafupets-phpmyadmin
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mafupets-mysql
+      - PMA_PORT=3306
+      - MYSQL_ROOT_PASSWORD=
+      - PMA_USER=root
+      - PMA_PASSWORD=
+      - UPLOAD_LIMIT=300M
+    depends_on:
+      - db
+
+volumes:
+  db-data:

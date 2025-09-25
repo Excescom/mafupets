@@ -1,140 +1,185 @@
 <?php 
+ session_start();
         require 'head.php';
-        session_start();
+       
 ?> 
 
   <?php 
-    require 'plantillaPublicaciones.php';
 	  require 'nav.php';
     require 'bd.php';
+
+    $contador = 0;
+
+    if(isset($_GET['contador']))
+    {
+      $contador = $_GET['contador'];
+    }
     
   ?>
 
   <?php 
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['especie'])) {
+      $animales = filtroespecie($_POST['especie']);
+      header("Location: index.php?contador=0&especie=" . $_POST['especie']);
+      exit;
+    }
+
     if(isset($_SESSION['Protectora'])){
       header("Location: protectoraInicio.php");
       exit;
     } 
+
+
+    if(isset($_GET['contador']))
+    {
+      if(isset($_GET['especie']))
+      {
+        $especie = $_GET['especie'];
+        $animales = obtenerAnimalesConfiltro( $_GET['contador'] , $especie);
+      }
+      else
+      {
+        $animales = obtenerAnimalesConfiltro($_GET['contador'] , "Todos");
+      }
+    }
+    else
+    {
+    $animales = obtenerAnimalesConfiltro(0 , "Todos");
+    }
+    if(isset($_SESSION['Usuario'])){
+    $animalesGustados = obtenerAnimalesFavoritos($_SESSION['Usuario']['UniqueID']);
+    }
+
+    if($_SERVER['REQUEST_METHOD'] === 'POST'){
+      $animal = obtenerAnimalporID($_POST['id']);
+      aniadirAnimalFavorito($_SESSION['Usuario']['UniqueID'], $animal['UniqueID']);
+      header("Location: listaAnimales.php");
+      exit;
+    }
   ?>
-  <main class="flex flex-col items-center w-full gap-4 relative pt-[30px] ">
-<!-- Contenedor general del carrusel -->
-<div class="flex justify-center w-full p-2">
-  <div class="sm:w-[464.7px] relative h-full rounded-lg overflow-hidden">
+ <div class="fixed w-full top-0 left-0 z-50">
+  <div class="w-full flex justify-center pt-2">
+    <form class="flex items-center gap-2 bg-black/70 p-2 rounded-lg" action="index.php" method="post">
+      <label class="text-white" for="especie">Especie:</label>
+      <input class="border border-gray-600 rounded p-1 bg-white/90" type="text" name="especie" id="especie">
+      <button type="submit" class="bg-[#54B5BE] hover:bg-[#54B5BE]/80 text-white px-3 py-1 rounded">Filtrar</button>
+    </form>
+  </div>
+</div>
+  <main class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 w-full relative pt-[30px] top-[30%] ">
+    <!--contadores para paginar los animales-->
+  <?php 
+  $contadorexterno = $contador;
+  $contadorinterno = 0; 
+  ?>
 
-    <!-- Contenedor de las imágenes -->
-    <div id="slider" class="flex  transition-transform duration-500 ease-in-out h-full w-ful ">
-      <div class=" w-full flex justify-center items-center flex-shrink-0">
-        <img src="multimedia/protectoras/1/perfil/perfil.webp" class="w-full  object-cover rounded-lg" alt="Imagen 1">
-      </div>
-      <div class=" w-full flex justify-center items-center flex-shrink-0">
-      <video class="w-full  rounded-lg" src="multimedia/videoPrueba.mp4" controls></video>
-      </div>
-      <div class=" w-full flex justify-center items-center flex-shrink-0">
-        <video class="w-full  rounded-lg" src="../clip_1.742.734.636.943.mp4" controls></video>
-      </div>
+  <?php if(!$animales){ 
+    ?>
+    <div class="w-full flex justify-center items-center col-span-3 text-center z-[100]">
+    <p class="text-center text-[15px] sm-text-[30px] bg-black/50 p-2 rounded text-white">No se encontraron más animales</p>
     </div>
-
-    <!-- Botones de navegación -->
-    <button id="prev" class="z-20 absolute top-1/2 left-2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full shadow-lg">
-      <span class="material-symbols-outlined">
-        arrow_back_ios
-      </span>
-    </button>
-    <button id="next" class="z-20 absolute top-1/2 right-2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full shadow-lg">
-      <span class="material-symbols-outlined">
-        arrow_forward_ios
-      </span>
-    </button>
-
-    <!-- Texto descriptivo -->
-    <p class="absolute bottom-0 w-full bg-black/50 text-white p-2 rounded-b-lg z-10"> 
+    <?php }?>
+<?php foreach($animales as $animal){ 
+  $contadorinterno++;
+  $contadorexterno++;
+  if($contadorinterno >= 10){
+    break;
+  }
+  ?>
+ <!-- Contenedor general de la multimedia -->
+<div>
+ <div class="flex flex-col justify-center  sm:h-[80vh] h-auto">
+ <h2 class="text-2xl text-white text-center lg:text-4xl p-2 rounded-t-lg font-bold"><?php echo $animal['Nombre']; ?></h2>
+  <div class="relative h-full rounded-lg">
+    
+    <div class="h-full w-full flex justify-center items-center p-2">
+      <?php $multimedia = obtenerImagenesAnimalporID($animal['UniqueID']); ?>
+      <?php $multi = $multimedia[random_int(0, count($multimedia) - 1)]; ?>
       <?php 
-        $des = obtenerDescAnimal(1);
-        echo $des;
+      // Obtener la extensión del archivo
+        $extension = strtolower(pathinfo($multi['Enlace'], PATHINFO_EXTENSION));
         
+        // Array con extensiones de imagen
+        $imagenes = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        
+        // Array con extensiones de video
+        $videos = ['mp4', 'webm', 'ogg','mov','mkv'];
       ?>
-    </p>
-
-    <!-- Botonera lateral -->
-    <div class="absolute right-0 translate-x-3 bottom-[10%] flex flex-col-reverse items-end gap-4 p-2 z-20">
-      <button class="text-white px-4">
-        <span class="material-symbols-outlined">error</span>
-      </button>
-      <button class="text-white px-4">
-        <span class="material-symbols-outlined">mode_comment</span>
-      </button>
-      <button class="text-white px-4">
-        <span class="material-symbols-outlined">add_circle</span>
-      </button>
-      <button class="text-white px-4">
-        <span class="material-symbols-outlined">account_circle</span>
-      </button>
+      <?php if(in_array($extension, $videos)){ ?>
+      <video class=" w-full h-[80vh] rounded-lg z-10" src="<?php echo $multi['Enlace']; ?>" alt="" controls></video>
+      <?php }else{ ?>
+      <img class="h-[80vh] rounded-lg z-10" src="<?php echo $multi['Enlace']; ?>" alt="">
+      <?php } ?>
     </div>
-
-  </div>
+   
+  </div >
 </div>
 
- 
-
-
- <!-- Contenedor general del video -->
- <div class="flex justify-center sm:h-[88vh] p-2  h-[60vh]">
-  <div class="relative h-full rounded-lg">
-    <div class="h-full w-full flex justify-center items-center">
-      <img class="h-full rounded-lg z-10" src="wp3307160.webp" alt="">
-    </div>
-    
-    <p class=" text-[15px] sm-text-[30px] absolute bottom-0 w-full bg-black/50 text-white p-2 rounded-b-lg z-20">
-      Texto descriptivo de los animales sacado de la base de datos
+<div class="w-full flex flex-col items-center justify-center pt-7 top-0">
+    <p class="text-center text-[15px] sm-text-[30px] bottom-0 w-full  bg-black/50 text-white rounded-t-lg z-[20]">
+          <?php echo $animal['Descripcion']; ?>
     </p>
-
-    <!-- Botonera pegada a la imagen, no al viewport -->
-    <div class="absolute right-0 translate-x-3 bottom-[10%] flex flex-col-reverse items-end gap-4 p-2 z-20">
-      <button class="dark:text-white px-4">
-        <span class="material-symbols-outlined">error</span>
+</div>
+<!--botonera-->
+<div class="flex justify-center bg-black/50 rounded-b-lg">
+<a href="crearTicketUsuarios.php?id=<?php echo $animal['UniqueID']; ?>" class="dark:text-white px-4">
+        <span class="material-symbols-outlined text-white">error</span>
+      </a>
+      <a target="_blank" href="paginaComentarios.php?id=<?php echo $animal['UniqueID']; ?>" class="dark:text-white px-4 boton-comentario" data-animal-id="<?php echo $animal['UniqueID']; ?>">
+        <span class="material-symbols-outlined text-white">mode_comment</span>
+      </a>
+      <?php
+      $gustado = false;
+      
+      if(isset($_SESSION['Usuario'])){
+      foreach($animalesGustados as $animalGustado){
+        if($animalGustado['UniqueID'] == $animal['UniqueID']){
+          echo '<a href="listaAnimales.php?id='.$animal['UniqueID'].'" class="text-white px-4">
+          <span class="material-symbols-outlined text-white">task_alt</span>
+        </a>';
+        $gustado = true;
+        }
+      } 
+      }
+      ?>
+      <?php if(!$gustado){ ?>
+      <form action="" method="post">
+      <button type="submit" name="gustar" class="text-white px-4 cursor-pointer">
+        <span class="material-symbols-outlined text-white">add_circle</span>
       </button>
-      <button class="dark:text-white px-4">
-        <span class="material-symbols-outlined">mode_comment</span>
-      </button>
-      <button class="dark:text-white px-4">
-        <span class="material-symbols-outlined">add_circle</span>
-      </button>
-      <button class="dark:text-white px-4">
-        <span class="material-symbols-outlined">account_circle</span>
-      </button>
-    </div>
-  </div>
+      <input type="hidden" name="id" value="<?php echo $animal['UniqueID']; ?>">
+      </form>
+      <?php } ?>
+      <a href="IndexAnimales.php?id=<?php echo $animal['UniqueID']; ?>" class="text-white px-4">
+        <span class="material-symbols-outlined text-white">account_circle</span>
+      </a>
+</div>
 </div>
 
- <!-- Contenedor general del video -->
- <div class="flex justify-center sm:h-[88vh] p-2  h-[60vh]">
-  <div class="relative h-full rounded-lg">
-    <div class="h-full w-full flex justify-center items-center">
-      <video class="w-[324.97px] sm:w-[408.7px] aspect-video" src="../clip_1.742.734.636.943.mp4" controls></video>
-    </div>
-    
-    <p class=" text-[15px] sm-text-[30px] absolute bottom-0 w-full bg-black/50 text-white p-2 rounded-b-lg">
-      Texto descriptivo de los animales sacado de la base de datos
-    </p>
+<?php } ?>
 
-    <!-- Botonera pegada a la imagen, no al viewport -->
-    <div class="absolute right-0  translate-x-3 bottom-[10%] flex flex-col-reverse items-end gap-4 p-2">
-      <button class="dark:text-white px-4">
-        <span class="material-symbols-outlined">error</span>
-      </button>
-      <button class="dark:text-white px-4">
-        <span class="material-symbols-outlined">mode_comment</span>
-      </button>
-      <button class="dark:text-white px-4">
-        <span class="material-symbols-outlined">add_circle</span>
-      </button>
-      <button class="dark:text-white px-4">
-        <span class="material-symbols-outlined">account_circle</span>
-      </button>
-    </div>
-  </div>
-</div>
   </main>
+  <div class="flex justify-center">
+  <?php if($animales){ ?>
+    <?php if(isset($_GET['especie'])): ?>
+<a href="index.php?contador=<?php echo $contadorexterno-1; ?>&especie=<?php echo $especie; ?>" class="bg-[#EDB439] hover:bg-[#EDB439]/80 text-white font-bold p-2 px-4 rounded">Ver más</a>
+<?php else: ?>
+  <?php if($contadorinterno < 10){ ?>
+    <a href="index.php?contador=0" class="bg-[#EDB439] hover:bg-[#EDB439]/80 text-white font-bold p-2 px-4 rounded">Volver al inicio</a>
+<?php }
+else{ ?>
+<a href="index.php?contador=<?php echo $contadorexterno-1; ?>" class="bg-[#EDB439] hover:bg-[#EDB439]/80 text-white font-bold p-2 px-4 rounded">Ver más</a>
+
+<?php } ?>
+<?php endif; ?>
+<?php }else{ ?>
+<?php if(isset($_GET['especie'])): ?>
+<a href="index.php?contador=0&especie=<?php echo $especie; ?>" class="bg-[#EDB439] hover:bg-[#EDB439]/80 text-white font-bold p-2 px-4 rounded">Volver al inicio</a>
+<?php else: ?>
+<a href="index.php?contador=0" class="bg-[#EDB439] hover:bg-[#EDB439]/80 text-white font-bold p-2 px-4 rounded">Volver al inicio</a>
+<?php endif; ?>
+<?php } ?>
+</div>
 </body>
-<script src="sriptsJS/carrousel.js"></script>
 </html>

@@ -71,6 +71,7 @@ CREATE TABLE Reservas (
     UniqueID INT AUTO_INCREMENT PRIMARY KEY,
     IDProtectora INT,
     FechaHora DATETIME,
+    estado BOOLEAN,
     Tipo ENUM('visita', 'puertas abiertas', 'voluntariado'),
     FOREIGN KEY (IDProtectora) REFERENCES Protectoras(UniqueID)
 );
@@ -79,7 +80,7 @@ CREATE TABLE Reservas (
 CREATE TABLE UsuariosReservas (
     IDUsuario INT,
     IDReserva INT,
-    UsuariosReservas BOOLEAN DEFAULT FALSE,
+    Aceptado BOOLEAN DEFAULT FALSE,
     PRIMARY KEY (IDUsuario, IDReserva),
     FOREIGN KEY (IDUsuario) REFERENCES Usuarios(UniqueID) ON DELETE CASCADE,
     FOREIGN KEY (IDReserva) REFERENCES Reservas(UniqueID) ON DELETE CASCADE
@@ -118,13 +119,12 @@ CREATE TABLE TiketsProtectoras (
     Descripcion VARCHAR(255),
     FOREIGN KEY (IDProtectora) REFERENCES Protectoras(UniqueID) ON DELETE CASCADE
 );
-
 -- Tabla: Comentarios (relación N:M)
 CREATE TABLE Comentarios (
+    UniqueID INT AUTO_INCREMENT PRIMARY KEY,
     IDUsuario INT,
     IDAnimal INT,
     Comentario VARCHAR(255),
-    PRIMARY KEY (IDUsuario, IDAnimal),
     FOREIGN KEY (IDUsuario) REFERENCES Usuarios(UniqueID) ON DELETE CASCADE,
     FOREIGN KEY (IDAnimal) REFERENCES Animales(UniqueID) ON DELETE CASCADE
 );

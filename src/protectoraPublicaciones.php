@@ -11,6 +11,7 @@
     $bd = conection();
     if ($_SERVER['REQUEST_METHOD'] === 'POST') 
     {
+      
         $nombre = $_POST['nombre'] ?? '';
         $especie = $_POST['especie'] ?? '';
         $peso = $_POST['peso'] ?? '';
@@ -19,12 +20,13 @@
         $imagen = $_FILES['imagen']['name'] ?? '';
         $protectora = obtenerProtectoraCorreo($_SESSION['Protectora']['Correo']);
         
+       
         $stmt = $bd->prepare("INSERT INTO animales (Nombre, Especie, Peso, Discapacidad, Descripcion, IDProtectora) VALUES (?, ?, ?, ?, ?, ?)");
         $stmt->execute([$nombre, $especie, $peso, $discapacidad, $descripcion, $protectora['UniqueID']]);
         $animal = $bd->lastInsertId();
 
-        // Procesar la imagen
-        $ruta_imagen = '';
+        // Procesar la multimedia
+        $rutamultimedia = '';
         if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
             // Definir la carpeta donde se guardarán las imágenes
             $carpeta_destino = "multimedia/protectoras/" . $protectora['UniqueID'] . "/" . $animal . "/perfil";
@@ -40,15 +42,17 @@
             
             // Mover el archivo cargado a la carpeta de destino
             if (move_uploaded_file($_FILES['imagen']['tmp_name'], $ruta_completa)) {
-                $ruta_imagen = "multimedia/protectoras/" . $protectora['UniqueID'] . "/" . $animal . "/perfil/" . $nombre_archivo;
+                $rutamultimedia = "multimedia/protectoras/" . $protectora['UniqueID'] . "/" . $animal . "/perfil/" . $nombre_archivo;
             } 
         }
         $stmtMultimedia = $bd->prepare("INSERT INTO multimedias (IDAnimal, Enlace) VALUES (?, ?)");
-        $stmtMultimedia->execute([$animal, $ruta_imagen]);
+        $stmtMultimedia->execute([$animal, $rutamultimedia]);
 
         header("Location: protectoraInicio.php");
         exit;
-    }
+      }
+ 
+    
 
     
 ?>
@@ -86,10 +90,15 @@
           <li>
             <a href="protectoraPublicaciones.php" class="inline-block hover:text-gray-300 hover:border-gray-300 p-4 rounded-t-lg ">Crear animales</a>
           </li>
+          <li>
+            <a href="crearTicketProtectora.php" class="inline-block hover:text-gray-300 hover:border-gray-300 p-4 rounded-t-lg ">Crear tickets</a>
+          </li>
         </ul>
       </div>
 
-      <form action="" class="max-w-sm mx-auto bg-gray-800 p-6 rounded-lg shadow-md w-full gap-3 flex flex-col" method="POST" enctype="multipart/form-data">
+      <div class="flex flex-col items-center justify-center w-full h-full p-4" id="alerta"></div>
+
+      <form action="" class="max-w-sm mx-auto bg-gray-800 p-6 rounded-lg shadow-md w-full gap-3 flex flex-col" method="POST" enctype="multipart/form-data" onsubmit="return validartamanio()">
         <label class="block text-gray-300 text-sm font-semibold mb-2" for="nombre">Nombre</label>
         <input type="text" id="nombre" name="nombre" required
             class="w-full p-2 mb-4 border border-gray-600 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -112,7 +121,7 @@
             class="w-full p-2 mb-4 border border-gray-600 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
         
             <label class="block text-gray-300 text-sm font-semibold mb-2" for="imagen">Imagen Perfil</label>
-        <input type="file" name="imagen" id="imagen" required
+        <input type="file" name="imagen" id="imagen" required 
             class="w-full p-2 mb-4 border border-gray-600 rounded bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
 
         <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
@@ -120,5 +129,6 @@
         </button>
     </form>
   </main>
+  <script src="sriptsJS/validarImagenes.js"></script>
 </body>
 </html>

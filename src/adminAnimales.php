@@ -9,19 +9,31 @@
   require 'sesion.php';
     comprobar_admin();
     
-  // Procesar la eliminación si se recibió un ID
-  if (isset($_POST['eliminar_animal']) && isset($_POST['id_animal'])) {
-    $idAnimal = $_POST['id_animal'];
-    if (eliminarAnimal($idAnimal)) {
-      header("Location: adminAnimales.php");
+    if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['borrar']))
+    {
+      $idAnimal = $_POST['id_animal'];
+      $animal = obtenerAnimalporID($idAnimal);
+      $rutaCarpeta = "multimedia/protectoras/".$animal['IDProtectora']."/".$animal['UniqueID']."/";
+      if (eliminarDirectorio($rutaCarpeta)) {
+          eliminarAnimal($idAnimal);
+          header("Location: adminAnimales.php");
+          exit;
+      }
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['buscador']) && $_POST['buscador'] == 1) {
+      $buscador = 1;
+      $nombre = $_POST['filtro-nombre'];
+      $protectora = $_POST['filtro-protectora'];
+      $especie = $_POST['filtro-especie'];
+      header("Location: adminAnimales.php?buscador=1&nombre=$nombre&protectora=$protectora&especie=$especie");
       exit;
     }
-  }
 ?>
-  <main class="items-center w-[80%] gap-7 relative top-[] pl-6 left-[80px] ">
-    <div class="flex items-center content-center gap-5 p-4">
+   <main class="items-center w-full gap-7 relative ">
+    <div class="flex items-center content-center gap-5 p-4  pt-[50px]">
         
-        <h1 class="text-7xl">Admin Animales</h1>
+        <h1 class="text-4xl">Admin Animales</h1>
     </div>
    
    <hr class="w-full p-4">
@@ -29,68 +41,132 @@
 	    require 'navAdmin.php';
     ?>
    <hr>
-   <div class="p-6">
-    <div class="p-6 space-y-6">
-      <!-- Formulario de navegación por características -->
-      <div class="p-6 space-y-6">
-        <!-- Formulario de filtros -->
-        <form id="filtroForm" class="grid sm:grid-cols-4 gap-4">
-          <input type="text" placeholder="Nombre" id="filtro-nombre" class="border px-3 py-2 rounded-md text-sm" />
-          <input type="text" placeholder="Protectora" id="filtro-protectora" class="border px-3 py-2 rounded-md text-sm" />
-          <input type="text" placeholder="Especie" id="filtro-especie" class="border px-3 py-2 rounded-md text-sm" />
-          <input type="text" placeholder="Características" id="filtro-caracteristicas" class="border px-3 py-2 rounded-md text-sm" />
-        </form>
-        <button class="bg-blue-500 hover:bg-blue-600 p-2 rounded-lg">Filtrar</button>
-      
-    <table class="min-w-full border bg-white border-gray-300 text-sm text-left text-gray-700">
-      <thead class=" text-xs uppercase">
-        <tr class=" text-center">
-          <th class="px-4 py-2 border">Nombre</th>
-          <th class="px-4 py-2 border">Protectora</th>
-          <th class="px-4 py-2 border">Especie</th>
-          <th class="px-4 py-2 border">Peso</th>
-          <th class="px-4 py-2 border">Especie</th>
-          <th class="px-4 py-2 border">Discapacidad</th>
-          <th class="px-4 py-2 border">Descripción</th>
-          <th class="px-4 py-2 border">Acciones</th>
-        </tr>
-      </thead>
-      <tbody class="text-center text-black " >
-          <?php 
-              // Mostrar mensaje de resultado si existe
-              if (isset($mensaje)) {
-                echo "<tr><td colspan='8' class='px-4 py-2 text-center font-bold " . 
-                     (strpos($mensaje, 'Error') !== false ? "text-red-500" : "text-green-500") . 
-                     "'>" . $mensaje . "</td></tr>";
-              }
-              
-              $animales = obtenerAnimales();
+    
+    <!-- Formulario de filtros -->
+    <form id="filtroForm" class="grid sm:grid-cols-3 gap-4 " method="post">
+  
+  <input name="filtro-nombre" type="text" placeholder="Nombre" id="filtro-nombre" class="border px-3 py-2 rounded-md text-sm" />
+ 
+  <input name="filtro-protectora" type="text" placeholder="Protectora" id="filtro-protectora" class="border px-3 py-2 rounded-md text-sm" />
+ 
+  <input name="filtro-especie" type="text" placeholder="Especie" id="filtro-especie" class="border px-3 py-2 rounded-md text-sm" />
+  <button name="buscador" value="1" type="submit" class="bg-[#54B5BE] hover:bg-[#54B5BE]/80 p-2 rounded-lg">Filtrar</button>
+  </form>
 
+  
+    
+  
+      <?php 
+      if(isset($_GET['contador']))
+      {
+        $contadorexterno = $_GET['contador'];
+      }
+      else
+      {
+        $contadorexterno = 0;
+      }
+              if (isset($_GET['buscador']) && $_GET['buscador'] == 1)
+              {
+                $nombre = $_GET['nombre'];
+                $protectora = $_GET['protectora'];
+                $especie = $_GET['especie'];
+                
+                $animales = filtroAnimalesAdmin($nombre, $protectora, $especie,$contadorexterno);
+              }
+              else
+              {
+                $animales = obtenerAnimalespaginados($contadorexterno);
+              }
+              if(isset($_GET['contador']))
+              {
+                $contadorexterno = $_GET['contador'];
+              }
+              else
+              {
+                $contadorexterno = 0;
+              }
+              $contadorinterno = 0; 
+              echo "<div class='px-4 py-2 border w-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3  gap-2'>";
               foreach ($animales as $animal) 
               {
-                echo "<tr class='hover:bg-gray-50'>";
-                $nombreProtectora = obtenerNombreProtectora($animal['IDProtectora']);
-                echo "<td class='px-4 py-2 border'>" . htmlspecialchars($animal['Nombre']) . "</td>";
-                echo "<td class='px-4 py-2 border'>" . htmlspecialchars($nombreProtectora) . "</td>";
-                echo "<td class='px-4 py-2 border'>" . htmlspecialchars($animal['Especie']) . "</td>";
-                echo "<td class='px-4 py-2 border'>" . htmlspecialchars($animal['Peso']) . "KG </td>";
-                echo "<td class='px-4 py-2 border'>" . htmlspecialchars($animal['Especie']) . "</td>";
-                echo "<td class='px-4 py-2 border'>" . ($animal['Discapacidad'] ? 'Sí' : 'No') . "</td>";
-                echo "<td class='px-4 py-2 border'>" . htmlspecialchars($animal['Descripcion']) . "</td>";
-                echo "<td class='px-4 py-2 border'>
-                        <form method='POST' >
-                          <input type='hidden' name='id_animal' value='" . $animal['UniqueID'] . "'>
-                          <button type='submit' name='eliminar_animal' class='bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded'>
-                            Eliminar
-                          </button>
-                        </form>
-                      </td>";
-                echo "</tr>";
+                $contadorinterno++;
+                $contadorexterno++;
+                if($contadorinterno >= 10)
+                {
+                  break;
+                }
+                  echo "<div class='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2 bg-black/50 text-white text-[20px] rounded-lg'>";
+                  $imagenPerfil = selecionarimagenperfilanimal($animal['UniqueID']);
+                 echo "<div class='col-span-1 lg:col-span-2 xl:col-span-3 flex justify-center items-center pt-2 rounded-lg'>";
+                 echo "<img class='w-[50%] h-[300px] object-cover object-center rounded-lg pt-2' src='" . htmlspecialchars($imagenPerfil['Enlace']) . "' alt='Imagen del animal'>";
+                 echo "</div>";
+                 echo "<div class='col-span-1 lg:col-span-2 xl:col-span-1 flex items-center'>";
+                  echo "<p class='px-4 py-2 font-bold text-pink-200'>Nombre: </p>";
+                  echo "<p>".htmlspecialchars($animal['Nombre']) . "</p>";
+                  echo "</div>";
+                  $protectora = obtenerProtectoraID($animal['IDProtectora']);
+                  echo "<div class='col-span-1 lg:col-span-2 xl:col-span-1 flex items-center'>";
+                  echo "<p class='px-4 py-2 font-bold text-pink-200'>Protectora: </p>";
+                  echo "<p>". htmlspecialchars($protectora['Nombre']) . "</p>";
+                  echo "</div>";
+                  echo "<div class='col-span-1 lg:col-span-2 xl:col-span-1 flex items-center'>";
+                  echo "<p class='px-4 py-2 font-bold text-pink-200'>Especie: </p>";
+                  echo "<p>" . htmlspecialchars($animal['Especie']) . "</p>";
+                  echo "</div>";
+                  echo "<div class='col-span-1 lg:col-span-2 xl:col-span-1 flex items-center'>";
+                  echo "<p class='px-4 py-2 font-bold text-pink-200'>Peso: </p>";
+                  echo "<p>" . htmlspecialchars($animal['Peso']) . "</p>";
+                  echo "</div>";
+                  echo "<div class='col-span-1 lg:col-span-2 xl:col-span-1 flex items-center'>";
+                  echo "<p class='px-4 py-2 font-bold text-pink-200'>Discapacidad: </p>";
+                  echo "<p>" . htmlspecialchars($animal['Discapacidad'] == 1 ? "Sí" : "No") . "</p>";
+                  echo "</div>";
+                  echo "<div class='col-span-1 lg:col-span-2 xl:col-span-3 flex flex-col '>";
+                  echo "<p class=' font-bold px-4 col-span-3 text-pink-200'>Descripcion: </p>";
+                  echo "<p class='col-span-3 pl-4'>" . htmlspecialchars($animal['Descripcion']) . "</p>";
+                  echo "</div>";
+                  echo "<div class='col-span-1 lg:col-span-2 xl:col-span-3'>";
+                  echo "<form action='' method='post' >";
+                  echo "<input type='hidden' name='id_animal' value='" . $animal['UniqueID'] . "'>";
+                  echo "<input type='hidden' name='borrar' value='1'>";
+                  echo "<div class='flex gap-2 p-4'>";
+                  echo "<button type='submit' class='p-2 bg-[#DB3066] hover:bg-[#DB3066]/80 text-white rounded-lg'><span class='material-symbols-outlined scale-150'>
+                delete
+                </span></button>";
+                  echo "<a href='modificarAnimal.php?id=" . $animal['UniqueID'] . "' class='p-2 bg-[#54B5BE] hover:bg-[#54B5BE]/80 text-white rounded-lg'><span class='material-symbols-outlined scale-150'>
+                edit
+                </span></a>";
+                  echo "</div>";
+                  echo "</form>";
+                  echo "</div>";
+                
+                  echo "</div>";
+                
               }
+
+              if($contadorinterno==0)
+              {
+                echo "<div class='flex justify-center w-full col-span-3'>";
+                echo "No hay más animales";
+                echo "<a class='bg-[#EDB439] hover:bg-[#EDB439]/80 text-white font-bold p-2 px-4 rounded' href='adminAnimales.php?contador=0'>volver</a>";
+                echo "</div>";
+              }
+              else
+              {
+                echo "</div>";
+                echo "<div class='flex justify-center w-full'>";
+                if($contadorinterno==10)
+                {
+                echo "<a class='bg-[#EDB439] hover:bg-[#EDB439]/80 text-white font-bold p-2 px-4 rounded' href='adminAnimales.php?contador=" . ($contadorexterno - 1) . "'>Ver más</a>";
+                }
+                else
+                {
+                  echo "<a class='bg-[#EDB439] hover:bg-[#EDB439]/80 text-white font-bold p-2 px-4 rounded' href='adminAnimales.php?contador=" . ($contadorexterno - $contadorexterno) . "'>Volver</a>";
+                }
+                echo "</div>";
+              }
+              
           ?>
-      </tbody>
-    </table>
-  </div>
   </main>
 </body>
 </html>

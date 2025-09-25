@@ -4,7 +4,6 @@
 ?> 
 
   <?php 
-    require 'plantillaPublicaciones.php';
 	  require 'nav.php';
     require 'bd.php';
     
@@ -23,7 +22,7 @@
     <p>¿Está seguro de que desea cerrar sesión?</p>
     <div class="flex justify-center items-center content-center w-full gap-5 p-4 text-center"> 
         <a href="login.php" class="bg-[#54B5BE] hover:bg-[#54B5BE]/80 text-white font-bold p-2 px-4 rounded">Sí</a>
-        <a href="index.php" class="bg-[#DB3066] hover:bg-[#DB3066]/80 text-white font-bold p-2 px-4 rounded">No</a>
+        <a href="index.php?contador=0" class="bg-[#DB3066] hover:bg-[#DB3066]/80 text-white font-bold p-2 px-4 rounded">No</a>
     </div>
   </main>
 </body>

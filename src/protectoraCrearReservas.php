@@ -56,6 +56,9 @@
           <li>
             <a href="protectoraPublicaciones.php" class="inline-block hover:text-gray-300 hover:border-gray-300 p-4 rounded-t-lg ">Crear animales</a>
           </li>
+          <li>
+            <a href="crearTicketProtectora.php" class="inline-block hover:text-gray-300 hover:border-gray-300 p-4 rounded-t-lg ">Crear tickets</a>
+          </li>
         </ul>
       </div>
 
